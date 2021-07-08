@@ -15,8 +15,8 @@ router.get("/api/workouts", (req, res) => {
             
         ]
     )
-    .then((dbWorkouts) => {
-      res.json(dbWorkouts);
+    .then((workout) => {
+      res.json(workout);
     })
     .catch(err => {
       res.status(400).json(err);
@@ -24,9 +24,9 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.post("/api/workouts", (req, res) => {
-    Transaction.insertMany(body)
-      .then(dbWorkouts => {
-        res.json(dbWorkouts);
+    Workouts.create({})
+      .then(workout => {
+        res.json(workout);
       })
       .catch(err => {
         res.status(400).json(err);
@@ -61,8 +61,8 @@ Workouts.aggregate(
     ]
 )
 
-    .then(dbWorkouts => {
-      res.json(dbWorkouts);
+    .then(workout => {
+      res.json(workout);
     })
     .catch(err => {
       res.status(400).json(err);
