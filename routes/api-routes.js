@@ -1,26 +1,27 @@
 const router = require("express").Router();
-const Workout = require("../models/workouts.js");
+const Workouts = require("../models/workouts.js");
 
 router.get("/api/workouts", (req, res) => {
-    Workouts.aggregate(
-        [
-            {
-                $totals: {
-                totalDuration: {
-                    $sum: "exercises.duration",
-                }
+    // Workouts.aggregate(
+    //     [
+    //         {
+    //             $totals: {
+    //             totalDuration: {
+    //                 $sum: "exercises.duration",
+    //             }
     
-                }
-            }
+    //             }
+    //         }
             
-        ]
-    )
-    .then((workout) => {
-      res.json(workout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
+    //     ]
+    // )
+    // .then((workout) => {
+    //   res.json(workout);
+    // })
+    // .catch(err => {
+    //   res.status(400).json(err);
+    // });
+    Workouts.find({}).then(stuff => res.json(stuff))
 });
 
 router.post("/api/workouts", (req, res) => {
@@ -33,40 +34,49 @@ router.post("/api/workouts", (req, res) => {
       });
   });
 
-router.put("/api/workouts/:id", async (req, res) => {
-  try {
-      console.log(req.body)
-      const workout = await workout.findById(req.params.id)
-      workout.exercises.push(req.body)
-      await workout.save()
-      res.status(200).json(workout)
-  }
-    catch(err) {
-      res.status(400).json(err);
+router.put("/api/workouts/:id", (req, res) => {
+  // try {
+  //     console.log(req.body)
+  //     const workout = await workout.findById(req.params.id)
+  //     workout.exercises.push(req.body)
+  //     await workout.save()
+  //     res.status(200).json(workout)
+  // }
+  //   catch(err) {
+  //     res.status(400).json(err);
+  //   }
+  Workouts.findByIdAndUpdate(
+    req.params.id,
+    {
+      $push: { exercises: req.body }
     }
-    });
+  ).then(updated => {
+    res.json(updated)
+  })
+});
 
 router.get("/api/workouts/range", (req, res) => {
-Workouts.aggregate(
-    [
-        {
-            $totals: {
-            totalDuration: {
-                $sum: "exercises.duration",
-            }
+// Workouts.aggregate(
+//     [
+//         {
+//             $totals: {
+//             totalDuration: {
+//                 $sum: "exercises.duration",
+//             }
 
-            }
-        }
+//             }
+//         }
         
-    ]
-)
+//     ]
+// )
 
-    .then(workout => {
-      res.json(workout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
+//     .then(workout => {
+//       res.json(workout);
+//     })
+//     .catch(err => {
+//       res.status(400).json(err);
+//     });
+    Workouts.find({}).then(stuff => res.json(stuff))
 });
 
 module.exports = router;
