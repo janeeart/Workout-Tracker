@@ -6,7 +6,6 @@
 * Installation
 * License
 * Contributors
-* Tests
 * Questions
   
   
